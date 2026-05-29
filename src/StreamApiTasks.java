@@ -117,9 +117,16 @@ public class StreamApiTasks {
                         Collectors.summingDouble(OrderItem::totalPrice)));
     }
 
-    static Map<String, Double> topCustomers(List<Order> orders, int limit) {
-        // TODO: task 9
-        return Map.of();
+    static Map<String,Double> topCustomers(List<Order> orders, int limit) {
+
+        Map<String, Double> top3 = orders.stream()
+                .filter(order -> order.status() != OrderStatus.CANCELLED)
+                .collect(Collectors.groupingBy(
+                        Order::customerName,
+                        Collectors.summingDouble(Order::totalValue)
+                ));
+        top3.entrySet().stream().limit(limit);
+        return top3;
     }
 
     static Map<Boolean, List<Order>> partitionActiveOrdersByValue(List<Order> orders, double threshold) {
