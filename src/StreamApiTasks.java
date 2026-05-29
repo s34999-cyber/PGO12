@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class StreamApiTasks {
 
@@ -93,13 +94,14 @@ public class StreamApiTasks {
     }
 
     static double totalRevenue(List<Order> orders) {
-        return orders.stream()
-                .filter(Order -> !Order.status().equals(OrderStatus.CANCELLED)).map(Order::totalValue).reduce(0.0, Double::sum);
+        return orders.stream().filter(Order -> !Order.status().equals(OrderStatus.CANCELLED)).map(Order::totalValue).reduce(0.0, Double::sum);
     }
 
     static OptionalDouble averageDeliveredOrderValue(List<Order> orders) {
-        // TODO: task 6
-        return OptionalDouble.empty();
+        DoubleSummaryStatistics orderStats =orders.stream().filter(Order -> Order.status().equals(OrderStatus.DELIVERED))
+                .collect(Collectors.summarizingDouble(Order::totalValue));
+        OptionalDouble averageValue = OptionalDouble.of(orderStats.getAverage());
+        return averageValue;
     }
 
     static Map<OrderStatus, Long> countByStatus(List<Order> orders) {
