@@ -100,13 +100,12 @@ public class StreamApiTasks {
     static OptionalDouble averageDeliveredOrderValue(List<Order> orders) {
         DoubleSummaryStatistics orderStats =orders.stream().filter(Order -> Order.status().equals(OrderStatus.DELIVERED))
                 .collect(Collectors.summarizingDouble(Order::totalValue));
-        OptionalDouble averageValue = OptionalDouble.of(orderStats.getAverage());
-        return averageValue;
+        return OptionalDouble.of(orderStats.getAverage());
     }
 
     static Map<OrderStatus, Long> countByStatus(List<Order> orders) {
-        // TODO: task 7
-        return Map.of();
+        return orders.stream()
+                .collect(Collectors.groupingBy(Order::status, Collectors.counting()));
     }
 
     static Map<String, Double> revenueByCategory(List<Order> orders) {
