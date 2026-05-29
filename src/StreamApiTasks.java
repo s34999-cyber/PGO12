@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class StreamApiTasks {
 
@@ -130,8 +131,12 @@ public class StreamApiTasks {
     }
 
     static Map<Boolean, List<Order>> partitionActiveOrdersByValue(List<Order> orders, double threshold) {
-        // TODO: task 10
-        return Map.of();
+        Stream<Order> ordersStream = orders.stream();
+        Map<Boolean, List<Order>> split = orders.stream().collect(Collectors.partitioningBy(order -> order.totalValue() > threshold));
+
+
+
+        return split;
     }
 
     static Optional<Order> mostExpensiveDeliveredOrder(List<Order> orders) {
