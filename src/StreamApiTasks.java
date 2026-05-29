@@ -140,8 +140,9 @@ public class StreamApiTasks {
     }
 
     static Optional<Order> mostExpensiveDeliveredOrder(List<Order> orders) {
-        // TODO: task 11
-        return Optional.empty();
+
+        return orders.stream().filter(Order -> Order.status().equals(OrderStatus.DELIVERED))
+                .max(Comparator.comparingDouble(Order::totalValue));
     }
 
     static DoubleSummaryStatistics activeOrderStatistics(List<Order> orders) {
