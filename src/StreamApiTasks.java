@@ -134,7 +134,8 @@ public class StreamApiTasks {
         Stream<Order> ordersStream = orders.stream();
         Map<Boolean, List<Order>> split = orders.stream().collect(Collectors.partitioningBy(order -> order.totalValue() > threshold));
 
-
+        System.out.println("Over Threshold: " + split.get(true));
+        System.out.println("Under Threshold: " + split.get(false));
 
         return split;
     }
